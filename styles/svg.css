@@ -1,0 +1,29 @@
+/* SVG styles */
+:root {
+   --flip-time: 160ms;
+}
+
+svg circle, svg rect {
+   fill: var(--bg-1);
+   transition: transform var(--flip-time) ease-in-out, fill 0ms;
+   transition-delay: 0ms, calc(var(--flip-time) / 2);
+   transform: rotate3D(0, 0, 0, 180deg);
+}
+
+svg .click-box {
+   fill: transparent;
+}
+
+svg .active { 
+   fill: var(--fg-alt-0);
+   z-index: 2;
+   opacity: 1;
+}
+
+.animate-display svg circle.active {
+   transform: rotate3D(1, 1, 0, 180deg);
+}
+
+.animate-display svg rect.active {
+   transform: rotate3D(1, 0, 0, 180deg);
+}

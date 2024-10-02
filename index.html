@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <!-- Fonts and Material Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+   <link href="styles/sf-styles/sf-reset.css" rel="stylesheet">
+   <link href="styles/sf-styles/sf-styles.css" rel="stylesheet">
+   <link href="styles/styles.css" rel="stylesheet">
+   <link href="styles/svg.css" rel="stylesheet">
+   <script src="script.js" defer></script>
+   <script src="components.js" defer></script>
+
+   <!-- Import OpenType.js -->
+   <script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
+
+   <!-- alpha -->
+   <title>Dot Matrix Editor | Studio Flora</title>
+</head>
+<body class="flex column">
+   <!-- <nav class="flex spread padding-m">
+      <h3>DMEditor <span>alpha</span></h3>
+   </nav> -->
+   <main>
+      <dm-type-case class="column"></dm-type-case>
+
+      <!-- Char editor -->
+      <section class="column padding-l gap-l" id="edit-panel">
+         <dm-current-glyph-display></dm-current-glyph-display>
+         <article class="flex center gap-m" id="char-edit-container">
+            <!-- Left -->
+            <div class="flex">
+               <button id="plus-left" onclick="font.editLeft(1)">+</button>
+               <button id="minus-left" onclick="font.editLeft(-1)">-</button>
+            </div>
+
+            <div class="column center gap-s">
+               <!-- Top -->
+               <!-- <div class="column center">
+                  <button id="plus-top" onclick="font.editTop(1)">+</button>
+                  <button id="minus-top" onclick="font.editTop(-1)">-</button>
+               </div> -->
+
+               <!-- Display -->
+               <dm-glyph-editor class="animate-display" id="editor"></dm-glyph-editor>
+
+               <!-- Bottom -->
+               <!-- <div class="column center">
+                  <button id="plus-bottom" onclick="font.editBottom(1)">+</button>
+                  <button id="minus-bottom" onclick="font.editBottom(-1)">-</button>
+               </div> -->
+
+               <dm-font-size-display class="flex center"></dm-font-size-display>
+            </div>
+
+            <!-- Right -->
+            <div class="flex">
+               <button id="minus-right" onclick="font.editRight(-1)">-</button>
+               <button id="plus-right" onclick="font.editRight(1)">+</button>
+            </div>
+         </article>
+      </section>
+
+      <!-- Control Panel -->
+      <section id="control-panel">
+         <article class="column">
+            <h2>Font</h2>
+             <div class="column gap-s">
+               <dm-font-name-input></dm-font-name-input>
+               <dm-baseline-input></dm-baseline-input>
+             </div>
+         </article>
+         <article class="column">
+            <h2>Appearance</h2>
+            <div class="column gap-s">
+               <dm-pixel-size-input></dm-pixel-size-input>
+               <!-- <div class="flex">
+                  <button class="selected round" id="round-dots">
+                     <span class="material-symbols-outlined">
+                        circle
+                     </span>
+                  </button>
+                  <button id="square-dots">
+                     <span class="material-symbols-outlined">
+                        square
+                     </span>
+                  </button>
+               </div> -->
+               <div class="column">
+                  <h3>Theme</h3>
+                  <div class="flex gap-s">
+                     <button class="selected" id="light-mode" onclick="setTheme('light')">
+                        <span class="material-symbols-outlined">
+                           light_mode
+                        </span>
+                     </button>
+                     <button id="dark-mode" onclick="setTheme('dark')">
+                        <span class="material-symbols-outlined filled">
+                           nightlight
+                        </span>
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </article>
+         <article class="column gap-xs">
+            <h3>Edit</h3>
+            <div class="toolbar column">
+               <button id="clear-char" title="Clear character" onclick="currentGlyph.clear()">
+                  <span class="material-symbols-outlined">
+                     ink_eraser
+                  </span>
+                  Clear
+               </button>
+               <button id="invert-char" title="Invert character" onclick="currentGlyph.invert()">
+                  <span class="material-symbols-outlined">
+                     invert_colors
+                  </span>
+                  Invert
+               </button>
+            </div>
+         </article>
+
+         <!-- Clipboard -->
+         <article class="column">
+            <h3>Clipboard</h3>
+            <div class="column center">
+               <dm-glyph codepoint="clipboard"></dm-glyph>
+            </div>
+            <div class="flex center gap-l">
+               <button id="copy-char" title="Copy current glyph to clipboard" onclick="copyToClipboard()">
+                  <span class="material-symbols-outlined">
+                     content_copy
+                  </span>
+               </button>
+               <button id="paste-char" title="Paste clipboard to current glyph" onclick="pasteFromClipboard()">
+                  <span class="material-symbols-outlined">
+                     content_paste
+                  </span>
+               </button>
+            </div>
+         </article>
+
+         <!-- File options -->
+         <article class="column gap-xs">
+            <h3>File options</h3>
+            <div class="toolbar column">
+               <button title="Upload font" onclick="document.querySelector('#import').click()">
+                  <span class="material-symbols-outlined">
+                     upload
+                  </span>
+                  Upload
+               </button>
+               <!-- avoids Choose File text -->
+               <input id="import" type="file" style="display:none" onchange="importFont(event)">
+               <button id="download" title="Download font matrix" onclick="saveTypeface()">
+                  <span class="material-symbols-outlined">
+                     download
+                  </span>
+                  Save .txt
+               </button>
+               <button id="export" title="Export to OTF" onclick="exportTypeface()">
+                  <span class="material-symbols-outlined">
+                     save
+                  </span>
+                  Build .otf
+               </button>
+            </div>
+         </article>
+      </section>
+   </main>
+</body>
+</html>

@@ -1,0 +1,220 @@
+:root {
+   --gap-line: 0.08rem;
+
+   --dark-base-0: #000000;
+   --dark-base-1: #151c21;
+   --dark-base-2: #273540;
+
+   --light-alt-0: #18e741;
+   --light-alt-1: #44b78b;
+   --light-alt-2: #8f99ff;
+
+   --light-base-0: #f4f0f1;
+   --light-base-1: #dfe4df;
+   --light-base-2: #65d9be;
+
+   --dark-alt-0: #4f5be1;
+   --dark-alt-1: #2b894d;
+   --dark-alt-2: #2b894d;
+
+   /* --light-yellow: #cbc239;
+   --light-green: #18e741;
+   --light-red: #ff4f4f;
+   --light-orange: #ff5d5d;
+   --light-purple: #e9a7ff;
+   --light-pink: #f9a0e8; */
+
+   --hl-0: light-dark(var(--light-alt-0), var(--dark-alt-0));
+
+   --fg-0: light-dark(var(--dark-base-0), var(--light-base-0));
+   --fg-1: light-dark(var(--dark-base-1), var(--light-base-1));
+   --fg-2: light-dark(var(--dark-base-2), var(--light-base-2));
+
+   --fg-alt-0: light-dark(var(--dark-alt-0), var(--light-alt-0));
+   --fg-alt-1: light-dark(var(--dark-alt-1), var(--light-alt-1));
+   --fg-alt-2: light-dark(var(--dark-alt-2), var(--light-alt-2));
+
+   --bg-0: light-dark(var(--light-base-0), var(--dark-base-0));
+   --bg-1: light-dark(var(--light-base-1), var(--dark-base-1));
+   --bg-2: light-dark(var(--light-base-2), var(--dark-base-2));
+}
+
+body {
+   font-family: 'Noto Sans', sans-serif;
+   font-weight: 400;
+}
+
+body >* {
+   accent-color: var(--hl-0);
+}
+
+.material-symbols-outlined {
+   font-weight: 300;
+}
+
+main {
+   display: grid;
+   grid-template-columns: 1fr 2fr min-content;
+   grid-template-rows: 100%;
+   grid-template-areas:
+      "tc ep cp";
+   width: 100vw;
+   height: 100vh;
+   /* gap: var(--gap-xs); */
+   overflow-y: hidden;
+   background-color: var(--bg-0);
+   /* padding-top: var(--gap-xs); */
+
+   &> *:not(:last-child) {
+      /* background-color: var(--bg-2); */
+      /* border-radius: var(--gap-l); */
+      border-right: var(--border);
+      border-color: var(--bg-2);
+   }
+}
+
+h1, h2 {
+   font-size: 1rem;
+   /* line-height: em; */
+}
+
+h3, h4, h5, h6 {
+   font-size: 0.8rem;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+   font-weight: 400;
+}
+
+/* p, h1, h2, h3, h4, h5, h6 {
+   color: var(--fg-0);
+} */
+
+h3 {
+   color: var(--fg-alt-1);
+}
+
+/* h2 {
+   color: var(--fg-2);
+} */
+
+button {
+   height: 2em;
+   width: 2em;
+   border-radius: 0.08em;
+   overflow: hidden;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   &.selected {
+      background-color: var(--hl-0);
+   }
+}
+
+input {
+   border-color: var(--bg-2);
+   background-color: var(--bg-1);
+}
+
+#edit-panel {
+   grid-area: ep;
+   position: relative;
+}
+
+#control-panel {
+   grid-area: cp;
+   /* background-color: var(--bg-1); */
+   /* border-radius: var(--gap-l); */
+
+   &> *:not(:last-child) {
+      border-bottom: var(--border);
+      border-color: var(--bg-2);
+   }
+
+   &> * {
+      padding: var(--gap-s) var(--gap-m);
+      /* gap: 0.7rem; */
+   }
+}
+
+dm-type-case {
+   overflow-y: scroll;
+   grid-area: tc;
+
+   .glyph-container {
+      flex-wrap: wrap;
+   }
+}
+
+dm-charset {
+   border-bottom: var(--border);
+   border-color: var(--bg-2);
+   padding: var(--gap-m);
+
+   & label {
+      font-size: 0.8rem;
+   }
+
+   &:last-of-type {
+      border-bottom: none;
+   }
+}
+
+dm-glyph p {
+   font-size: 0.8rem;
+   width: 1.4em;
+   height: 1.4em;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+dm-glyph canvas {
+   width: fit-content;
+   height: 5rem;
+   color: var(--bg-0);
+}
+
+dm-glyph-editor svg {
+   height: 75vh;
+   width: fit-content;
+}
+
+.current-glyph p {
+   background: var(--hl-0);
+}
+
+/* .current-glyph canvas {
+   --fg-0: var(--light-alt-0);
+} */
+
+.toolbar button {
+   width: 100%;
+   justify-content: left;
+   gap: var(--gap-l);
+   font-weight: 300;
+}
+
+@media (max-aspect-ratio: 1/1) {
+   /* Portrait layout here */
+
+   main {
+      grid-template-columns: 1fr 12em;
+      grid-template-rows: 60% 40%;
+      grid-template-areas:
+         "ep cp"
+         "tc cp";
+   }
+
+   dm-type-case {
+      border-top: var(--border);
+   }
+}
+
+@media (hover: hover) {
+   button:hover {
+      background: var(--hl-0);
+   }
+}
