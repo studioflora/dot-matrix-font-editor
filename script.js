@@ -80,8 +80,8 @@ let font = {
       "defaultWidth": 7,
       "baseline": 2,
       "showBaseline": false,
+      "tracking": 1,
       "widthLock": false,
-      "glyphPadding": 1,
       "theme": "dark",
    },
 
@@ -118,6 +118,13 @@ let font = {
          this.styles.pixelSize = pixelSize;
          this.syncStyles();
       }
+   },
+
+   setTracking(tracking) {
+      if (0 <= tracking && tracking <= 32) {
+         this.styles.tracking = tracking;
+      }
+      this.syncFontSize();
    },
 
    setBaseline(baseline) {
@@ -198,6 +205,7 @@ let font = {
 
    editBottom(rows) {
       this.styles.height += rows;
+      this.setBaseline(this.styles.baseline + rows);
       if (this.styles.height < 1) {
          this.styles.height = 1;
       }
@@ -487,7 +495,7 @@ function exportTypeface() {
       const newGlyph = new opentype.Glyph({
          name: String.fromCodePoint(glyph),
          unicode: glyph,
-         advanceWidth: (font.glyphs[glyph].matrix[0].length + font.styles.glyphPadding) * otfGridSize,
+         advanceWidth: (font.glyphs[glyph].matrix[0].length + font.styles.tracking) * otfGridSize,
          path: newCharPath
       })
       newGlyphs.push(newGlyph);
@@ -517,7 +525,11 @@ function importFont(event) {
 
       font.setName(sourceFont?.name);
       font.setPixelSize(sourceFont?.styles?.pixelSize);
+      font.setTracking(sourceFont?.styles?.tracking);
       font.setBaseline(sourceFont?.styles?.baseline);
+      if (sourceFont?.styles?.showBaseline == false) {
+         font.hideBaseline();
+      }
 
       if (sourceFont.pixelShape) {
          font.styles.pixelShape = sourceFont.styles.pixelShape;
@@ -527,10 +539,6 @@ function importFont(event) {
 
       if (sourceFont?.styles?.widthLock) {
          font.styles.widthLock = sourceFont.styles.widthLock;
-      }
-
-      if (sourceFont?.styles?.glyphPadding) {
-         font.styles.glyphPadding = sourceFont.styles.glyphPadding;
       }
 
       for (const glyph in sourceFont.glyphs) {

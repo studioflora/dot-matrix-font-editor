@@ -182,17 +182,25 @@ class DMFontSizeDisplay extends HTMLElement {
    constructor() {
       super();
       this.innerHTML = `
-         <form id="font-size-display" class="flex gap-l">
-            <button is="dm-width-lock"></button>
-            <span class="flex gap-s">
-               <label for="font-width-display">W</label>
-               <input id="font-width-display" name="font width" type="number" min="1" max="32">
-            </span>
-            <span class="flex gap-s">
-               <label for="font-height-display">H</label>
-               <input id="font-height-display" name="font height" type="number" min="1" max="32">
-            </span>
-            <input type="submit" value="Apply">
+         <form id="font-size-display" class="column gap-s">
+            <div class="column">
+               <h3>Font size</h3>
+               <div class="flex gap-s" style="flex-wrap: wrap;">
+                  <div class="flex gap-s">
+                     <label for="font-width-display">W</label>
+                     <input id="font-width-display" name="font width" type="number" min="1" max="32">
+                  </div>
+                  <div class="flex gap-s">
+                     <label for="font-height-display">H</label>
+                     <input id="font-height-display" name="font height" type="number" min="1" max="32">
+                  </div>
+                  <button type="submit" class="hidden selected">
+                     <span class="material-symbols-outlined">
+                        check
+                     </span>
+                  </button
+               </div>
+            </div
          </form>
       `;
    }
@@ -201,17 +209,14 @@ class DMFontSizeDisplay extends HTMLElement {
       this.form = this.querySelector('#font-size-display');
       this.heightDisplay = this.querySelector('#font-height-display');
       this.widthDisplay = this.querySelector('#font-width-display');
-      this.submitBtn = this.querySelector('#font-size-display input[type="submit"]')
+      this.submitBtn = this.querySelector('#font-size-display button[type="submit"]')
       this.heightDisplay.addEventListener('input', () => {
          this.submitBtn.classList.remove('hidden');
       })
-      // this.heightDisplay.addEventListener('blur', this.sync);
       this.widthDisplay.addEventListener('input', () => {
          this.submitBtn.classList.remove('hidden');
       })
-      // this.widthDisplay.addEventListener('blur', this.sync);
       this.form.addEventListener('submit', this.setDefaultMatrix);
-      // this.form.addEventListener('blur', this.sync);
       document.addEventListener('sync-font-size', this.sync);
       this.sync();
    }
@@ -365,6 +370,43 @@ class DMBaselineInput extends HTMLElement {
 }
 customElements.define('dm-baseline-input', DMBaselineInput);
 
+class DMTrackingInput extends HTMLElement {
+   constructor() {
+      super();
+      this.innerHTML = `
+         <div class="flex gap-s">
+            <h3>Tracking</h3>
+            <h3 id="tracking-display">A.B</h3>
+         </div>
+         <div class="flex gap-s">
+            <input type="number" id="tracking-input" min="0" max="32">
+         </div>
+      `;
+      document.addEventListener('sync-font-size', this.sync);
+   }
+
+   connectedCallback() {
+      this.trackingDisplay = this.querySelector('#tracking-display');
+      this.trackingInput = this.querySelector('#tracking-input');
+      this.trackingInput.addEventListener('input', () => {
+         font.setTracking(this.trackingInput.value);
+      });
+      this.sync();
+   }
+
+   sync = () => {
+      let trackingDisplayText = 'A';
+      for (let i = 0; i < font.styles.tracking; i++) {
+         trackingDisplayText += '.'
+      }
+      trackingDisplayText += 'B'
+      this.trackingDisplay.innerText = trackingDisplayText;
+
+      this.trackingInput.value = font.styles.tracking;
+   }
+}
+customElements.define('dm-tracking-input', DMTrackingInput);
+
 class DMCurrentGlyphDisplay extends HTMLElement {
    constructor() {
       super();
@@ -405,7 +447,6 @@ class DMGlyph extends HTMLElement {
       }
       this.appendChild(this.canvas);
    }
-
 
    connectedCallback() {
       if (this.hasAttribute('labeled')) {
@@ -559,7 +600,7 @@ class DMCharset extends HTMLElement {
          } else {
             delete font.glyphs[char]?.unsorted
          }
-         charsInnerHTML += `<dm-glyph codepoint="${char}" labeled></dm-glyph>`;
+         charsInnerHTML += `<dm-glyph codepoint="${char}" class="column gap-xs" labeled></dm-glyph>`;
       }
       this.glyphContainer.innerHTML = charsInnerHTML;
       this.checkbox.checked = true;
@@ -594,6 +635,44 @@ class DMTypeCase extends HTMLElement {
    }
 }
 customElements.define('dm-type-case', DMTypeCase);
+
+class SFToggle extends HTMLButtonElement {
+   constructor() {
+      super();
+      this.state = 0;
+      this.toggleClass = this.getAttribute('toggle-class');
+      this.addEventListener('click', this.sync);
+   }
+
+   connectedCallback() {
+      this.target = document.querySelectorAll(this.getAttribute('toggle-target'))
+   }
+
+   sync() {
+      console.log('boop');
+      if (document.startViewTransition) {
+         document.startViewTransition(() => {
+            this.toggle();
+         });
+      } else {
+         this.toggle();
+      }
+   }
+
+   toggle() {
+      if(this.state) {
+         this.target.forEach(element => {
+            element.classList.remove(this.toggleClass);
+         });
+      } else {
+         this.target.forEach(element => {
+            element.classList.add(this.toggleClass);
+         });
+      }
+      this.state = 1 - this.state;
+   }
+}
+customElements.define('sf-toggle', SFToggle, {extends: 'button'});
 
 // class DMDisplay extends HTMLElement {
 //    constructor() {
