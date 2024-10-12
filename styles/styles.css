@@ -5,7 +5,7 @@
    --dark-base-1: #151c21;
    --dark-base-2: #4b555c;
 
-   --light-alt-0: #18e741;
+   --light-alt-0: #0ce65c;
    --light-alt-1: #44b78b;
    --light-alt-2: #8f99ff;
 
@@ -45,7 +45,9 @@ body {
    font-family: 'Noto Sans', sans-serif;
    font-weight: 400;
    width: 100vw;
-   height: 100vh;
+   height: 100dvh;
+   min-height: 0;
+   overflow: hidden;
    display: grid;
    grid-template-columns: 1fr 2fr min-content;
    grid-template-rows: min-content 1fr;
@@ -91,6 +93,10 @@ h3 {
    color: var(--fg-alt-1);
 }
 
+.small {
+   font-size: 0.8rem;
+}
+
 button {
    height: 2em;
    width: 2em;
@@ -114,13 +120,13 @@ input {
    border-left: var(--border);
    display: grid;
    grid-template-areas: 
-      ".    top    col-btn"
+      ".    cgd    col-btn"
+      ".    top    ."
       "left edit   right"
       ".    bottom ."
-      "cgd  cgd    cgd"
    ;
    grid-template-columns: min-content 1fr min-content;
-   grid-template-rows: min-content 1fr min-content min-content;
+   grid-template-rows: min-content min-content 1fr min-content;
    max-height: 100%;
    height: 100%;
    justify-content: center;
@@ -151,6 +157,7 @@ dm-glyph-editor svg {
    overflow-y: scroll;
    transition: width var(--out);
    width: 12em;
+   max-height: 100%;
    border-left: var(--border);
 }
 
@@ -183,10 +190,6 @@ dm-type-case .glyph-container {
 dm-charset {
    border-bottom: var(--border);
    padding: var(--gap-m);
-}
-
-dm-charset label {
-   font-size: 0.8rem;
 }
 
 dm-charset:last-of-type {

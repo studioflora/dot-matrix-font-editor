@@ -1,4 +1,5 @@
 const r = document.querySelector(':root');
+const body = document.querySelector('body');
 const editorGlyph = document.querySelector('#editor');
 
 // Appearance
@@ -31,6 +32,12 @@ const charsets = {
       "name": "Roman Lowercase",
       "slug": "roman-lowercase",
       "chars": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+   },
+
+   "arabic-numerals": {
+      "name": "Arabic Numerals",
+      "slug": "arabic-numerals",
+      "chars": [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
    },
 
    "basic-punctuation": {
@@ -591,10 +598,10 @@ document.addEventListener('keydown', function(e) {
 checkPreferredTheme();
 new Glyph('clipboard');
 
-window.onload = function() {
+window.onload = () => {
    font.setCurrentGlyph(65);
 }
 
-// window.onbeforeunload = function() {
-//    return 'Edits you have made to this font file may not been saved. Are you sure you want to refresh?';
-// };
+window.addEventListener('beforeunload', (e) => {
+   e.preventDefault();
+});

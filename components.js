@@ -239,6 +239,7 @@ class DMWidthLock extends HTMLButtonElement {
    constructor() {
       super();
       this.addEventListener('click', this.toggleWidthLock);
+      document.addEventListener('sync-font-styles', this.sync);
    }
 
    connectedCallback() {
@@ -416,7 +417,7 @@ class DMCurrentGlyphDisplay extends HTMLElement {
 
    sync = () => {
       if (currentGlyph) {
-         this.innerHTML = `Glyph ${String.fromCodePoint(currentGlyph.codepoint)}`;
+         this.innerHTML = `Glyph<span> ${String.fromCodePoint(currentGlyph.codepoint)}</span>`;
       } else {
          this.innerHTML = 'Glyph';
       }
@@ -564,7 +565,7 @@ class DMCharset extends HTMLElement {
          <article class="charset column">
             <div class="flex gap-m">
                <input type="checkbox" name="${this.name}" id="${this.slug}-checkbox">
-               <label for="${this.slug}-checkbox">${this.name}</label>
+               <label for="${this.slug}-checkbox" class="small">${this.name}</label>
             </div>
             <div class="glyph-container flex gap-m"></div>
          </article>
