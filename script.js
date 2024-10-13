@@ -245,6 +245,13 @@ let font = {
          currentGlyph.editRight(cols);
       }
    },
+
+   reset() {
+      this.forEachGlyph(glyph => glyph.clear());
+      for (const charset in this.charsets) {
+         this.charsets[charset].removeChars();
+      }
+   },
 }
 
 function setTheme(color) {
@@ -521,6 +528,7 @@ function exportTypeface() {
 }
 
 function importFont(event) {
+   font.reset();
    console.log('Importing...');
    let sourceFile = event.target.files[0];
    const fileReader = new FileReader();
