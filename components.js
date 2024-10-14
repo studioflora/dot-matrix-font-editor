@@ -343,6 +343,7 @@ class DMBaselineInput extends HTMLElement {
       this.baselineToggle = this.querySelector('#toggle-baseline');
       this.baselineInput.addEventListener('input', () => {
          font.setBaseline(this.baselineInput.value);
+         font.showBaseline();
       })
       this.sync();
    }
@@ -650,8 +651,7 @@ class SFToggle extends HTMLButtonElement {
    }
 
    sync() {
-      console.log('boop');
-      if (document.startViewTransition) {
+      if (document?.startViewTransition) {
          document.startViewTransition(() => {
             this.toggle();
          });

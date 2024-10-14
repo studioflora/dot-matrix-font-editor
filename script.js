@@ -37,7 +37,7 @@ const charsets = {
    "arabic-numerals": {
       "name": "Arabic Numerals",
       "slug": "arabic-numerals",
-      "chars": [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
+      "chars": [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
    },
 
    "basic-punctuation": {
@@ -137,7 +137,6 @@ let font = {
    setBaseline(baseline) {
       if (0 <= baseline && baseline <= this.styles.height) {
          this.styles.baseline = baseline;
-         this.showBaseline();
       }
       this.syncStyles();
    },
