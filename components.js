@@ -235,32 +235,31 @@ class DMFontSizeDisplay extends HTMLElement {
 }
 customElements.define('dm-font-size-display', DMFontSizeDisplay);
 
-class DMWidthLock extends HTMLButtonElement {
+class DMWidthLock extends HTMLElement {
    constructor() {
       super();
       this.addEventListener('click', this.toggleWidthLock);
       document.addEventListener('sync-font-styles', this.sync);
+      this.innerHTML = `
+         <button onclick="this.sync">
+            <span class="material-symbols-outlined">
+            </span>
+         </button>
+      `;
    }
 
    connectedCallback() {
+      this.lock = this.querySelector('.material-symbols-outlined');
       this.sync();
    }
 
    sync = () => {
       if (font.styles.widthLock) {
          this.classList.add('selected');
-         this.innerHTML = `
-            <span class="material-symbols-outlined">
-               lock
-            </span>
-         `;
+         this.lock.innerText = 'lock';
       } else {
          this.classList.remove('selected');
-         this.innerHTML = `
-            <span class="material-symbols-outlined">
-               lock_open
-            </span>
-         `;
+         this.lock.innerText = 'lock_open';
       }
    }
 
@@ -269,7 +268,7 @@ class DMWidthLock extends HTMLButtonElement {
       this.sync();
    }
 }
-customElements.define('dm-width-lock', DMWidthLock, {extends: 'button'});
+customElements.define('dm-width-lock', DMWidthLock);
 
 class DMPixelSizeInput extends HTMLElement {
    constructor() {
@@ -638,20 +637,28 @@ class DMTypeCase extends HTMLElement {
 }
 customElements.define('dm-type-case', DMTypeCase);
 
-class SFToggle extends HTMLButtonElement {
+class SFToggle extends HTMLElement {
    constructor() {
       super();
       this.state = 0;
       this.toggleClass = this.getAttribute('toggle-class');
-      this.addEventListener('click', this.sync);
+      this.innerHTML = `
+         <button>
+            <span class="material-symbols-outlined">
+               tune
+            </span>
+         </button>
+      `;
    }
 
    connectedCallback() {
-      this.target = document.querySelectorAll(this.getAttribute('toggle-target'))
+      this.querySelector('button').onclick = () => this.sync();
+      this.target = document.querySelectorAll(this.getAttribute('toggle-target'));
    }
 
    sync() {
-      if (document?.startViewTransition) {
+      console.log('synced');
+      if (document.startViewTransition) {
          document.startViewTransition(() => {
             this.toggle();
          });
@@ -673,7 +680,7 @@ class SFToggle extends HTMLButtonElement {
       this.state = 1 - this.state;
    }
 }
-customElements.define('sf-toggle', SFToggle, {extends: 'button'});
+customElements.define('sf-toggle', SFToggle);
 
 // class DMDisplay extends HTMLElement {
 //    constructor() {

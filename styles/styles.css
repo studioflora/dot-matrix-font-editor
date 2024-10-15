@@ -146,8 +146,8 @@ dm-glyph-editor {
 }
 
 dm-glyph-editor svg {
-   height: max-content;
-   width: max-content;
+   height: 100%;
+   width: 100%;
    max-width: 100cqw;
    max-height: 100cqh;
 }

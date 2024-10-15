@@ -42,11 +42,8 @@
 
       <dm-glyph-editor class="animate-display" id="editor" style="grid-area: edit"></dm-glyph-editor>
 
-      <button is="sf-toggle" toggle-target="#control-panel" toggle-class="collapse-width" style="grid-area: col-btn">
-         <span class="material-symbols-outlined">
-            tune
-         </span>
-      </button>
+      <sf-toggle toggle-target="#control-panel" toggle-class="collapse-width" style="grid-area: col-btn"></sf-toggle>
+         
 
       <!-- Top -->
       <div class="flex" style="grid-area: top">
@@ -63,7 +60,7 @@
       <!-- Left -->
       <div class="column center" style="grid-area: left">
          <button id="plus-left" onclick="font.editLeft(1)">+</button>
-         <button is="dm-width-lock"></button>
+         <dm-width-lock></dm-width-lock>
          <button id="minus-left" onclick="font.editLeft(-1)">-</button>
       </div>
 
