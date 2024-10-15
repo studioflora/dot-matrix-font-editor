@@ -249,16 +249,17 @@ class DMWidthLock extends HTMLElement {
    }
 
    connectedCallback() {
+      this.btn = this.querySelector('button');
       this.lock = this.querySelector('.material-symbols-outlined');
       this.sync();
    }
 
    sync = () => {
       if (font.styles.widthLock) {
-         this.classList.add('selected');
+         this.btn.classList.add('selected');
          this.lock.innerText = 'lock';
       } else {
-         this.classList.remove('selected');
+         this.btn.classList.remove('selected');
          this.lock.innerText = 'lock_open';
       }
    }
