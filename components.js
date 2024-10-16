@@ -418,7 +418,11 @@ class DMCurrentGlyphDisplay extends HTMLElement {
 
    sync = () => {
       if (currentGlyph) {
-         this.innerHTML = `Glyph<span> ${String.fromCodePoint(currentGlyph.codepoint)}</span>`;
+         if (currentGlyph.codepoint == 32) {
+            this.innerHTML = `Glyph<span> space</span>`;
+         } else {
+            this.innerHTML = `Glyph<span> ${String.fromCodePoint(currentGlyph.codepoint)}</span>`;
+         }
       } else {
          this.innerHTML = 'Glyph';
       }
@@ -452,7 +456,11 @@ class DMGlyph extends HTMLElement {
 
    connectedCallback() {
       if (this.hasAttribute('labeled')) {
-         this.displayLabel.innerText = String.fromCodePoint(this.codepoint);
+         if (this.codepoint == 32) {
+            this.displayLabel.innerText = 'space';
+         } else {
+            this.displayLabel.innerText = String.fromCodePoint(this.codepoint);
+         }
          this.addEventListener('click', () => {
             font.setCurrentGlyph(this.codepoint);
          })

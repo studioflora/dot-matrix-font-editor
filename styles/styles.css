@@ -198,7 +198,9 @@ dm-charset:last-of-type {
 
 dm-glyph p {
    font-size: 0.8rem;
-   width: 1.4em;
+   min-width: 1.4em;
+   width: min-content;
+   padding: var(--gap-xs);
    height: 1.4em;
    display: flex;
    align-items: center;

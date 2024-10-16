@@ -70,11 +70,11 @@ const charsets = {
       "chars": [36, 164, 165, 8364, 8372, 8377, 8501, 8539, 8369, 8383, 8470]
    },
 
-   "ligatures": {
-    "name": "Ligatures",
-    "slug": "ligatures",
-    "chars": [64256, 64257, 64258, 64259, 64260, 64261, 64262, 64263, 64264, 64265]
-  }
+   // "ligatures": {
+   //  "name": "Ligatures",
+   //  "slug": "ligatures",
+   //  "chars": [64256, 64257, 64258, 64259, 64260, 64261, 64262, 64263, 64264, 64265]
+   //  }
 }
 
 let font = {
@@ -518,7 +518,7 @@ function exportTypeface() {
    var otfFont = new opentype.Font({
       familyName: font.name,
       styleName: 'Dot Matrix',
-      unitsPerEm: font.styles.defaultWidth * otfGridSize,
+      unitsPerEm: font.styles.height * otfGridSize,
       ascender: (font.styles.height - font.styles.baseline) * otfGridSize,
       descender: -font.styles.baseline * otfGridSize,
       glyphs: newGlyphs
