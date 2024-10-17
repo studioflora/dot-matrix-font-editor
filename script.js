@@ -20,62 +20,15 @@ let mouseIsDown = false;
 let drawMode = 1;
 let currentGlyph;
 
-const charsets = {
-   "roman-uppercase": {
-      "name": "Roman Uppercase",
-      "slug": "roman-uppercase",
-      "default": "true",
-      "chars": [65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
-   },
+let charsets;
 
-   "roman-lowercase": {
-      "name": "Roman Lowercase",
-      "slug": "roman-lowercase",
-      "chars": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
-   },
-
-   "arabic-numerals": {
-      "name": "Arabic Numerals",
-      "slug": "arabic-numerals",
-      "chars": [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
-   },
-
-   "basic-punctuation": {
-      "name": "Basic Punctuation",
-      "slug": "basic-punctuation",
-      "chars": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126]
-   },
-
-   // "special-symbols": {
-   //    "name": "Special Symbols",
-   //    "slug": "special-symbols",
-   //    "chars": [169, 174, 8482, 167, 182, 8225, 8224, 8710, 8721, 8730, 8776, 8800, 8839, 8997, 9500, 9508, 9516, 9600, 9642]
-   // },
-
-   "arrows": {
-      "name": "Arrows",
-      "slug": "arrows",
-      "chars": [8592, 8593, 8594, 8595, 8596, 8597, 8617, 8618, 8629, 8630, 8656, 8657, 8658, 8659, 8660, 8676, 8677, 8678, 8680, 8681, 8682, 8686, 8690]
-   },
-
-   "math-symbols": {
-      "name": "Math Symbols",
-      "slug": "math-symbols",
-      "chars": [8704, 8706, 8707, 8710, 8719, 8721, 8722, 8727, 8730, 8733, 8734, 8743, 8744, 8745, 8746, 8756, 8764, 8776, 8800, 8801, 8804, 8805, 8814, 8815, 8826, 8827, 8839]
-   },
-
-   "currency-symbols": {
-      "name": "Currency Symbols",
-      "slug": "currency-symbols",
-      "chars": [36, 164, 165, 8364, 8372, 8377, 8501, 8539, 8369, 8383, 8470]
-   },
-
-   // "ligatures": {
-   //  "name": "Ligatures",
-   //  "slug": "ligatures",
-   //  "chars": [64256, 64257, 64258, 64259, 64260, 64261, 64262, 64263, 64264, 64265]
-   //  }
-}
+fetch('charsets.json')
+   .then(response => response.json())
+   .then(charsetData => {
+      charsets = charsetData;
+      console.log(charsets);
+      document.dispatchEvent(new CustomEvent('charsets-loaded'));
+   });
 
 let font = {
    name: "My Dot Matrix Font",
@@ -606,7 +559,7 @@ checkPreferredTheme();
 new Glyph('clipboard');
 
 window.onload = () => {
-   font.setCurrentGlyph(65);
+   // font.setCurrentGlyph(65);
 }
 
 window.addEventListener('beforeunload', (e) => {

@@ -635,6 +635,15 @@ customElements.define('dm-charset', DMCharset);
 class DMTypeCase extends HTMLElement {
    constructor() {
       super();
+      // this.sync();
+   }
+
+   connectedCallback() {
+      document.addEventListener('charsets-loaded', this.build);
+   }
+
+   build = () => {
+      document.removeEventListener('charsets-loaded', this.sync);
       let typeCaseInnerHTML = '';
       for (const charset in charsets) {
          typeCaseInnerHTML += `
@@ -642,6 +651,7 @@ class DMTypeCase extends HTMLElement {
          `;
       };
       this.innerHTML = typeCaseInnerHTML;
+      font.setCurrentGlyph(65);
    }
 }
 customElements.define('dm-type-case', DMTypeCase);
