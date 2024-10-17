@@ -9,17 +9,19 @@ const darkModeBtn = document.querySelector('#dark-mode');
 // File options
 const fontNameInput = document.querySelector('#font-name');
 
-// Bezier curve constant
-const kappa = 0.5522848;
 // Device pixel ratio
 const dpr = window.devicePixelRatio || 1;
+
+// Bezier curve constant
+const kappa = 0.5522848;
+
 // SVG grid size
 const gridSize = 10;
+const svgNS = 'http://www.w3.org/2000/svg';
 
 let mouseIsDown = false;
 let drawMode = 1;
 let currentGlyph;
-
 let charsets;
 
 fetch('charsets.json')

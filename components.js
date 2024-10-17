@@ -1,5 +1,3 @@
-const svgNS = 'http://www.w3.org/2000/svg';
-
 class DMGlyphEditor extends HTMLElement {
    static observedAttributes = ['codepoint'];
    constructor() {
@@ -377,7 +375,7 @@ class DMTrackingInput extends HTMLElement {
       super();
       this.innerHTML = `
          <div class="flex gap-s">
-            <h3>Tracking</h3>
+            <h3>Tracking:</h3>
             <h3 id="tracking-display">A.B</h3>
          </div>
          <div class="flex gap-s">

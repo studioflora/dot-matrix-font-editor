@@ -9,7 +9,7 @@
    --light-alt-1: #44b78b;
    --light-alt-2: #8f99ff;
 
-   --light-base-0: #f4f0f1;
+   --light-base-0: #f0f2f4;
    --light-base-1: #dfe4df;
    --light-base-2: #65d9be;
 
@@ -89,7 +89,7 @@ h1, h2, h3, h4, h5, h6 {
    font-weight: 400;
 }
 
-h3 {
+h3, button, #control-panel label.small {
    color: var(--fg-alt-1);
 }
 
@@ -220,8 +220,12 @@ dm-glyph canvas {
 .toolbar button {
    width: 100%;
    justify-content: left;
-   gap: var(--gap-l);
    font-weight: 300;
+}
+
+.toolbar button .material-symbols-outlined {
+   width: 2em;
+   overflow-x: hidden;
 }
 
 #toggle-bar {
