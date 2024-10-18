@@ -74,7 +74,7 @@ svg {
 nav {
    border-bottom: var(--border);
    grid-area: nav;
-   padding: var(--gap-xs) var(--gap-s);
+   padding-left: var(--gap-s);
 }
 
 h1, h2 {
@@ -272,6 +272,19 @@ dm-glyph.clipboard canvas {
 
    #edit-panel {
       border-left: 0;
+   }
+
+   dialog {
+      border: var(--border);
+      margin-inline: auto;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 80vw;
+   }
+
+   dialog a {
+      display: inline-block;
    }
 }
 

@@ -702,6 +702,57 @@ class SFToggle extends HTMLElement {
 }
 customElements.define('sf-toggle', SFToggle);
 
+class DMInfoPanel extends HTMLElement {
+   constructor() {
+      super();
+      this.innerHTML = `
+         <button id="open-info-panel">
+            <span class="material-symbols-outlined">
+               info
+            </span>
+         </button>
+         <dialog id="info-panel">
+            <div class="column gap-m">
+               <div class="flex spread" style="padding-left: var(--gap-m)">
+                  <h2>Info</h2>
+                  <button id="close-info-panel">
+                     <span class="material-symbols-outlined">
+                        close
+                     </span>
+                  </button>
+               </div>
+               <div class="column padding-m gap-m">
+                  <div>
+                     <h3>Dot Matrix Font Editor by Studio Flora</h3>
+                     <p>This is an app for designing dot matrix fonts, and exporting them to usable OTF font files.</p>
+                  </div>
+                  <div>
+                     <h3>Starting out</h3>
+                     <p>1. Set your default glyph size.</p>
+                     <p>2. Set the baseline where the bottom of your glyphs will be.</p>
+                     <p>3. Draw away!</p>
+                  </div>
+                  <div>
+                     <h3>Saving</h3>
+                     <p>When you are done, you can save a .txt file to edit later, or generate a .otf font you can install on your computer!</p>
+                  </div>
+                  <p class="small">OTF font file generation provided by <a href="https://opentype.js.org/">opentype.js</a></p>
+               </div>
+            </div>
+         </dialog>
+      `;
+   }
+
+   connectedCallback() {
+      this.openBtn = this.querySelector('#open-info-panel');
+      this.closeBtn = this.querySelector('#close-info-panel');
+      this.dialog = this.querySelector('#info-panel');
+      this.openBtn.addEventListener('click', () => this.dialog.showModal());
+      this.closeBtn.addEventListener('click', () => this.dialog.close())
+   }
+}
+customElements.define('dm-info-panel', DMInfoPanel);
+
 // class DMDisplay extends HTMLElement {
 //    constructor() {
 //       super();
