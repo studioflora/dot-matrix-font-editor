@@ -99,6 +99,12 @@ h3 {
    font-size: 0.8rem;
 }
 
+.split {
+   display: grid;
+   gap: var(--gap-s);
+   grid-template-columns: 1fr 1fr;
+}
+
 button {
    height: 2em;
    width: 2em;
@@ -107,14 +113,21 @@ button {
    display: flex;
    justify-content: center;
    align-items: center;
+   padding: 0;
 }
 
 button.selected {
    background-color: var(--hl-0);
 }
 
+button.small {
+   height: 1.5rem;
+   width: 1.5rem;
+}
+
 input {
    background-color: var(--bg-1);
+   height: 1.5rem;
 }
 
 #edit-panel {
@@ -156,6 +169,7 @@ dm-glyph-editor svg {
 
 #control-panel {
    grid-area: cp;
+   overflow-x: hidden;
    overflow-y: scroll;
    transition: width var(--out);
    width: 12em;
@@ -211,8 +225,12 @@ dm-glyph p {
 
 dm-glyph canvas {
    width: fit-content;
-   height: 5rem;
+   height: 4rem;
    color: var(--bg-0);
+}
+
+dm-glyph.clipboard canvas {
+   height: 3rem;
 }
 
 .current-glyph p {

@@ -328,9 +328,9 @@ class DMBaselineInput extends HTMLElement {
       super();
       this.innerHTML = `
          <h3>Baseline</h3>
-         <div class="flex gap-s">
+         <div class="flex gap-xs">
+            <button class="small" id="toggle-baseline"></button>
             <input type="number" id="font-baseline" min="0" max="32">
-            <button id="toggle-baseline"></button>
          </div>
       `;
       document.addEventListener('sync-font-styles', this.sync);
@@ -377,7 +377,7 @@ class DMTrackingInput extends HTMLElement {
          <div class="flex gap-s">
             <h3>Tracking</h3>
          </div>
-         <div class="flex gap-m">
+         <div class="flex gap-s">
             <input type="number" id="tracking-input" min="0" max="32">
             <p id="tracking-display">A.B</p>
          </div>
@@ -595,8 +595,11 @@ class DMCharset extends HTMLElement {
    handleCharsetCheckbox = () => {
       if (this.checkbox.checked) {
          this.buildChars();
+         font.setCurrentGlyph(this.chars[0]);
       } else {
-         this.removeChars();
+         if (confirm(`Are you sure you want to delete ${this.name} and all of its glyphs? This cannot be undone.`)) {
+            this.removeChars();
+         }
       }
    }
 
@@ -626,6 +629,7 @@ class DMCharset extends HTMLElement {
 
       this.checkbox.checked = false;
       this.charsetContainer.classList.remove('gap-m');
+      font.checkCurrentGlyph();
    }
 }
 customElements.define('dm-charset', DMCharset);
@@ -649,7 +653,7 @@ class DMTypeCase extends HTMLElement {
          `;
       };
       this.innerHTML = typeCaseInnerHTML;
-      font.setCurrentGlyph(65);
+      font.resetCurrentGlyph();
    }
 }
 customElements.define('dm-type-case', DMTypeCase);

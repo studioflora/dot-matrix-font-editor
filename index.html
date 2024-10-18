@@ -109,12 +109,34 @@
       <!-- Font -->
       <article class="column">
          <h2>Font</h2>
-            <div class="column gap-s">
+         <div class="column gap-s">
             <dm-font-name-input></dm-font-name-input>
             <dm-font-size-display></dm-font-size-display>
+            <div class="split">
+               <dm-baseline-input></dm-baseline-input>
+               <dm-tracking-input></dm-tracking-input>
+            </div>
+         </div>
+      </article>
+      <article class="column">
+         <h2>Appearance</h2>
+         <div class="column gap-s">
             <dm-pixel-size-input></dm-pixel-size-input>
-            <dm-baseline-input></dm-baseline-input>
-            <dm-tracking-input></dm-tracking-input>
+            <div class="column">
+               <h3>Theme</h3>
+               <div class="flex gap-xs">
+                  <button class="selected" id="light-mode" onclick="setTheme('light')">
+                     <span class="material-symbols-outlined">
+                        light_mode
+                     </span>
+                  </button>
+                  <button id="dark-mode" onclick="setTheme('dark')">
+                     <span class="material-symbols-outlined filled">
+                        nightlight
+                     </span>
+                  </button>
+               </div>
+            </div>
          </div>
       </article>
 
@@ -137,45 +159,24 @@
             </button>
          </div>
          <h3>Clipboard</h3>
-         <div class="column center">
-            <dm-glyph codepoint="clipboard"></dm-glyph>
-         </div>
-         <div class="flex center gap-xl">
-            <div class="column center">
-               <button id="copy-char" title="Copy current glyph to clipboard" onclick="copyToClipboard()">
-                  <span class="material-symbols-outlined">
-                     content_copy
-                  </span>
-               </button>
-               <label for="copy-char" class="small">Copy</label>
-            </div>
-            <div class="column center">
-               <button id="paste-char" title="Paste clipboard to current glyph" onclick="pasteFromClipboard()">
-                  <span class="material-symbols-outlined">
-                     content_paste
-                  </span>
-               </button>
-               <label for="copy-char" class="small">Paste</label>
-            </div>
-         </div>
-      </article>
-
-      <article class="column">
-         <h2>Appearance</h2>
-         <div class="column gap-s">
-            <div class="column">
-               <h3>Theme</h3>
-               <div class="flex gap-xs">
-                  <button class="selected" id="light-mode" onclick="setTheme('light')">
+         <div class="flex gap-m">
+            <dm-glyph codepoint="clipboard" class="clipboard"></dm-glyph>
+            <div class="flex gap-s">
+               <div class="column center">
+                  <button id="copy-char" title="Copy current glyph to clipboard" onclick="copyToClipboard()">
                      <span class="material-symbols-outlined">
-                        light_mode
+                        content_copy
                      </span>
                   </button>
-                  <button id="dark-mode" onclick="setTheme('dark')">
-                     <span class="material-symbols-outlined filled">
-                        nightlight
+                  <label for="copy-char" class="small">Copy</label>
+               </div>
+               <div class="column center">
+                  <button id="paste-char" title="Paste clipboard to current glyph" onclick="pasteFromClipboard()">
+                     <span class="material-symbols-outlined">
+                        content_paste
                      </span>
                   </button>
+                  <label for="copy-char" class="small">Paste</label>
                </div>
             </div>
          </div>

@@ -140,6 +140,19 @@ let font = {
       this.syncCurrentGlyph();
    },
 
+   resetCurrentGlyph() {
+      if(Object.values(this.glyphs)[0]?.hasOwnProperty('codepoint')) {
+         this.setCurrentGlyph(Object.keys(this.glyphs)[0]);
+      } else {
+      }
+   },
+
+   checkCurrentGlyph() {
+      if (!this.glyphs.hasOwnProperty(currentGlyph.codepoint)) {
+         this.resetCurrentGlyph();
+      }
+   },
+
    sortGlyphs() {
       let firstUnsortedGlyph;
 
@@ -548,6 +561,8 @@ function importFont(event) {
       }
       font.sortGlyphs();
    }
+
+   font.setCurrentGlyph(Object.values(font)[0].codepoint);
 }
 
 // importButton.addEventListener('change', importFont);
@@ -595,6 +610,8 @@ new Glyph('clipboard');
 
 window.onload = () => {
    // font.setCurrentGlyph(65);
+
+   // font.setCurrentGlyph(Object.keys(this.glyphs)[0]);
 }
 
 window.addEventListener('beforeunload', (e) => {
