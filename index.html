@@ -106,38 +106,22 @@
 
    <!-- Control Panel -->
    <section id="control-panel">
+      <!-- Font -->
       <article class="column">
          <h2>Font</h2>
             <div class="column gap-s">
             <dm-font-name-input></dm-font-name-input>
             <dm-font-size-display></dm-font-size-display>
+            <dm-pixel-size-input></dm-pixel-size-input>
             <dm-baseline-input></dm-baseline-input>
             <dm-tracking-input></dm-tracking-input>
          </div>
       </article>
-      <article class="column">
-         <h2>Appearance</h2>
-         <div class="column gap-s">
-            <dm-pixel-size-input></dm-pixel-size-input>
-            <div class="column">
-               <h3>Theme</h3>
-               <div class="flex gap-xs">
-                  <button class="selected" id="light-mode" onclick="setTheme('light')">
-                     <span class="material-symbols-outlined">
-                        light_mode
-                     </span>
-                  </button>
-                  <button id="dark-mode" onclick="setTheme('dark')">
-                     <span class="material-symbols-outlined filled">
-                        nightlight
-                     </span>
-                  </button>
-               </div>
-            </div>
-         </div>
-      </article>
+
+      <!-- Glyph -->
       <article class="column gap-xs">
-         <h2>Edit</h2>
+         <h2>Glyph</h2>
+         <h3>Edit</h3>
          <div class="toolbar column">
             <button id="clear-char" title="Clear character" onclick="currentGlyph.clear()">
                <span class="material-symbols-outlined">
@@ -152,11 +136,7 @@
                Invert
             </button>
          </div>
-      </article>
-
-      <!-- Clipboard -->
-      <article class="column">
-         <h2>Clipboard</h2>
+         <h3>Clipboard</h3>
          <div class="column center">
             <dm-glyph codepoint="clipboard"></dm-glyph>
          </div>
@@ -176,6 +156,27 @@
                   </span>
                </button>
                <label for="copy-char" class="small">Paste</label>
+            </div>
+         </div>
+      </article>
+
+      <article class="column">
+         <h2>Appearance</h2>
+         <div class="column gap-s">
+            <div class="column">
+               <h3>Theme</h3>
+               <div class="flex gap-xs">
+                  <button class="selected" id="light-mode" onclick="setTheme('light')">
+                     <span class="material-symbols-outlined">
+                        light_mode
+                     </span>
+                  </button>
+                  <button id="dark-mode" onclick="setTheme('dark')">
+                     <span class="material-symbols-outlined filled">
+                        nightlight
+                     </span>
+                  </button>
+               </div>
             </div>
          </div>
       </article>

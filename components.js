@@ -329,8 +329,8 @@ class DMBaselineInput extends HTMLElement {
       this.innerHTML = `
          <h3>Baseline</h3>
          <div class="flex gap-s">
-            <button id="toggle-baseline"></button>
             <input type="number" id="font-baseline" min="0" max="32">
+            <button id="toggle-baseline"></button>
          </div>
       `;
       document.addEventListener('sync-font-styles', this.sync);
@@ -375,11 +375,11 @@ class DMTrackingInput extends HTMLElement {
       super();
       this.innerHTML = `
          <div class="flex gap-s">
-            <h3>Tracking:</h3>
-            <h3 id="tracking-display">A.B</h3>
+            <h3>Tracking</h3>
          </div>
-         <div class="flex gap-s">
+         <div class="flex gap-m">
             <input type="number" id="tracking-input" min="0" max="32">
+            <p id="tracking-display">A.B</p>
          </div>
       `;
       document.addEventListener('sync-font-size', this.sync);
@@ -674,7 +674,6 @@ class SFToggle extends HTMLElement {
    }
 
    sync() {
-      console.log('synced');
       if (document.startViewTransition) {
          document.startViewTransition(() => {
             this.toggle();

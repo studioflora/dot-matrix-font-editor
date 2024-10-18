@@ -28,7 +28,6 @@ fetch('charsets.json')
    .then(response => response.json())
    .then(charsetData => {
       charsets = charsetData;
-      console.log(charsets);
       document.dispatchEvent(new CustomEvent('charsets-loaded'));
    });
 
@@ -109,6 +108,14 @@ let font = {
    setDefaultMatrix(height, width) {
       const heightDiff = height - this.styles.height;
       const widthDiff = width - this.styles.defaultWidth;
+
+      if (heightDiff < 0 || widthDiff < 0) {
+         if(confirm('Are you sure you want to change your glyph size? Some data may be lost.')) {
+
+         } else {
+            return;
+         }
+      }
       this.styles.height = +height;
       this.styles.defaultWidth = +width;
 
@@ -138,7 +145,6 @@ let font = {
 
       do {
          firstUnsortedGlyph = Object.values(this.glyphs).find(glyph => glyph.unsorted === true);
-         // console.log(`Sorting ${firstUnsortedGlyph}`);
          for (const charset in this.charsets) {
             if (this.charsets[charset].chars.find(glyph => glyph == firstUnsortedGlyph?.codepoint)) {
                this.charsets[charset].buildChars();
@@ -153,6 +159,13 @@ let font = {
    },
 
    editTop(rows) {
+      if (rows < 0) {
+         if(confirm('Delete top row from every glyph?')) {
+
+         } else {
+            return;
+         }
+      }
       this.styles.height += rows;
       if (this.styles.height < 1) {
          this.styles.height = 1;
@@ -165,6 +178,13 @@ let font = {
    },
 
    editBottom(rows) {
+      if (rows < 0) {
+         if(confirm('Delete bottom row from every glyph?')) {
+
+         } else {
+            return;
+         }
+      }
       this.styles.height += rows;
       this.setBaseline(this.styles.baseline + rows);
       if (this.styles.height < 1) {
@@ -176,6 +196,13 @@ let font = {
 
    editLeft(cols) {
       if (this.styles.widthLock) {
+         if (cols < 0) {
+            if(confirm('Delete left column from every glyph?')) {
+   
+            } else {
+               return;
+            }
+         }
          this.styles.defaultWidth += cols;
          if (this.styles.defaultWidth < 1) {
             this.styles.defaultWidth = 1;
@@ -189,6 +216,13 @@ let font = {
 
    editRight(cols) {
       if (this.styles.widthLock) {
+         if (cols < 0) {
+            if(confirm('Delete right column from every glyph?')) {
+   
+            } else {
+               return;
+            }
+         }
          this.styles.defaultWidth += cols;
          if (this.styles.defaultWidth < 1) {
             this.styles.defaultWidth = 1;
@@ -428,7 +462,6 @@ function exportTypeface() {
    newGlyphs.push(notdefGlyph);
 
    for (const glyph in font.glyphs) {
-      console.log(`Building glyph ${glyph}`);
       let newCharPath = new opentype.Path();
 
       for (let y = 0; y < font.glyphs[glyph].matrix.length; y++) {

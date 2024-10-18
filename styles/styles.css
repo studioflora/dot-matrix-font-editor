@@ -8,14 +8,14 @@
    --light-alt-0: #12f665;
    --light-alt-1: #44b78b;
    --light-alt-2: #9ba3ff;
-   --light-alt-3: #07be90;
+   --light-alt-3: #03d55e;
 
    --light-base-0: #f0f2f4;
    --light-base-1: #dfe4df;
    --light-base-2: #65d9be;
 
    --dark-alt-0: #4f5be1;
-   --dark-alt-1: #295f52;
+   --dark-alt-1: #356c5f;
    --dark-alt-2: #cb3a3a;
 
    /* --light-yellow: #cbc239;
@@ -91,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
    line-height: 1.6em;
 }
 
-h3, button, #control-panel label.small {
+h3 {
    color: var(--fg-alt-1);
 }
 
