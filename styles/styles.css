@@ -88,6 +88,7 @@ h3, h4, h5, h6 {
 
 h1, h2, h3, h4, h5, h6 {
    font-weight: 400;
+   line-height: 1.6em;
 }
 
 h3, button, #control-panel label.small {
@@ -226,7 +227,7 @@ dm-glyph canvas {
 
 .toolbar button .material-symbols-outlined {
    width: 2em;
-   overflow-x: hidden;
+   overflow: hidden;
 }
 
 #toggle-bar {
