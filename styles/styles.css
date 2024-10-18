@@ -5,17 +5,18 @@
    --dark-base-1: #202c34;
    --dark-base-2: #4b555c;
 
-   --light-alt-0: #06f05c;
+   --light-alt-0: #12f665;
    --light-alt-1: #44b78b;
-   --light-alt-2: #8f99ff;
+   --light-alt-2: #9ba3ff;
+   --light-alt-3: #07be90;
 
    --light-base-0: #f0f2f4;
    --light-base-1: #dfe4df;
    --light-base-2: #65d9be;
 
    --dark-alt-0: #4f5be1;
-   --dark-alt-1: #2b894d;
-   --dark-alt-2: #2b894d;
+   --dark-alt-1: #295f52;
+   --dark-alt-2: #cb3a3a;
 
    /* --light-yellow: #cbc239;
    --light-green: #18e741;
@@ -24,7 +25,7 @@
    --light-purple: #e9a7ff;
    --light-pink: #f9a0e8; */
 
-   --hl-0: light-dark(var(--light-alt-0), var(--dark-alt-0));
+   --hl-0: light-dark(var(--light-alt-3), var(--dark-alt-0));
 
    --fg-0: light-dark(var(--dark-base-0), var(--light-base-0));
    --fg-1: light-dark(var(--dark-base-1), var(--light-base-1));
