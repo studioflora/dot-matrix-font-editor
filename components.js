@@ -702,6 +702,36 @@ class SFToggle extends HTMLElement {
 }
 customElements.define('sf-toggle', SFToggle);
 
+class SFFullscreen extends HTMLElement {
+   constructor() {
+      super();
+      this.innerHTML = `
+         <button>
+            <span class="material-symbols-outlined">
+            </span>
+         </button>
+      `
+   }
+
+   connectedCallback() {
+      this.btnIcon = this.querySelector('.material-symbols-outlined');
+      this.btn = this.querySelector('button');
+      document.addEventListener('fullscreenchange', this.sync);
+      this.sync();
+   }
+
+   sync = () => {
+      if (document.fullscreenElement) {
+         this.btnIcon.innerText = 'fullscreen_exit';
+         this.btn.onclick = () => document.exitFullscreen();
+      } else {
+         this.btnIcon.innerText = 'fullscreen';
+         this.btn.onclick = () => document.documentElement.requestFullscreen();
+      }
+   }
+}
+customElements.define('sf-fullscreen', SFFullscreen);
+
 class DMInfoPanel extends HTMLElement {
    constructor() {
       super();
