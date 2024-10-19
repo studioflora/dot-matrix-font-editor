@@ -199,7 +199,7 @@ let font = {
          }
       }
       this.styles.height += rows;
-      this.setBaseline(this.styles.baseline + rows);
+      this.setBaseline(+this.styles.baseline + +rows);
       if (this.styles.height < 1) {
          this.styles.height = 1;
       }
