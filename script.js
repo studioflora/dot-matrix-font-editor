@@ -469,7 +469,7 @@ function exportTypeface() {
    const notdefGlyph = new opentype.Glyph({
       name: '.notdef',
       unicode: 0,
-      advanceWidth: font.styles.defaultWidth * otfGridSize,
+      advanceWidth: (font.styles.defaultWidth + +font.styles.tracking) * otfGridSize,
       path: new opentype.Path()
    });
    newGlyphs.push(notdefGlyph);
@@ -509,7 +509,7 @@ function exportTypeface() {
       const newGlyph = new opentype.Glyph({
          name: String.fromCodePoint(glyph),
          unicode: glyph,
-         advanceWidth: (font.glyphs[glyph].matrix[0].length + font.styles.tracking) * otfGridSize,
+         advanceWidth: (font.glyphs[glyph].matrix[0].length + +font.styles.tracking) * otfGridSize,
          path: newCharPath
       })
       newGlyphs.push(newGlyph);
