@@ -148,17 +148,23 @@
          <h2>Glyph</h2>
          <h3>Edit</h3>
          <div class="toolbar column">
-            <button id="clear-char" title="Clear character" onclick="currentGlyph.clear()">
+            <button id="clear-char" title="Clear glyph" onclick="currentGlyph.clear()">
                <span class="material-symbols-outlined">
                   ink_eraser
                </span>
                Clear
             </button>
-            <button id="invert-char" title="Invert character" onclick="currentGlyph.invert()">
+            <button id="invert-char" title="Invert glyph" onclick="currentGlyph.invert()">
                <span class="material-symbols-outlined">
                   invert_colors
                </span>
                Invert
+            </button>
+            <button id="flip-horizontal" title="Flip" onclick="currentGlyph.flipHorizontal()">
+               <span class="material-symbols-outlined">
+                  flip
+               </span>
+               Flip
             </button>
          </div>
          <h3>Clipboard</h3>

@@ -361,6 +361,16 @@ class Glyph {
       this.syncDisplays();
    }
 
+   flipVertical = () => {
+      this.matrix.reverse();
+      this.syncDisplays();
+   }
+
+   flipHorizontal = () => {
+      this.matrix.map(row => row.reverse());
+      this.syncDisplays();
+   }
+
    syncTop() {
       const heightDiff = font.styles.height - this.matrix.length;
       if (heightDiff > 0) {
