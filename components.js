@@ -783,6 +783,182 @@ class DMInfoPanel extends HTMLElement {
 }
 customElements.define('dm-info-panel', DMInfoPanel);
 
+class DMDisplay extends HTMLElement {
+   static observedAttributes = ['width', 'value', 'font'];
+   constructor() {
+      super();
+      this.matrixHeight = 0;
+      this.message = this.getAttribute('value');
+      this.frameInterval;
+      this.innerHTML = `
+         <svg id="display"></svg>
+         <div class="flex gap-l hidden" id="display-controls">
+            <input type="text" id="message-input">
+            <div class="flex gap-s">
+               W
+               <input type="number" id="display-width-input">
+            </div>
+            <button id="close-display-controls-btn" style="margin-left: auto"><svg><use href="/styles/sf-styles/sf-icons.svg#close" /></svg></button>
+         </div>
+      `;
+      this.classList.add('column');
+      this.classList.add('gap-s');
+      this.display = this.querySelector('#display');
+      this.dialog = this.querySelector('#display-controls');
+      this.display.addEventListener('click', () => {
+         this.showControls();
+      });
+      this.closeControlsBtn = this.querySelector('#close-display-controls-btn');
+      this.closeControlsBtn.addEventListener('click', () => {
+         this.hideControls();
+      });
+      this.input = this.querySelector('#message-input');
+      this.input.addEventListener('input', () => {
+         this.setAttribute('value', this.input.value);
+      });
+      this.widthInput = this.querySelector('#display-width-input');
+      this.widthInput.addEventListener('input', () => {
+         this.setAttribute('width', this.widthInput.value);
+      });
+      document.addEventListener('update-display-font', this.updateFont);
+   }
+
+   connectedCallback() {
+      this.updateFont();
+   }
+
+   updateFont = () => {
+      this.matrixHeight = font.styles.height;
+      this.tracking = Array.from({ length: font.styles.tracking }, () => 0);
+      this.syncDisplay();
+      this.write();
+   }
+
+   attributeChangedCallback(changedAttribute, oldValue, newValue) {
+      switch (changedAttribute) {
+         case 'width':
+            this.matrixWidth = newValue;
+            this.syncDisplay();
+            this.widthInput.value = newValue;
+            break;
+         case 'value':
+            this.write(newValue);
+            this.input.value = newValue;
+            break;
+      }
+   }
+
+   syncDisplay() {
+      this.display.innerHTML = '';
+      this.displayMatrix = [];
+      this.display.setAttribute('viewBox', `0 0 ${this.matrixWidth * gridSize} ${this.matrixHeight * gridSize}`);
+      for (let y=0; y < this.matrixHeight; y++) {
+         this.displayMatrix.push([]);
+         for (let x = 0; x < this.matrixWidth; x++) {
+            const pixel = document.createElementNS(svgNS, 'circle');
+            pixel.setAttribute('cx', gridSize * (x + 0.5));
+            pixel.setAttribute('cy', gridSize * (y + 0.5));
+            pixel.setAttribute('r', font.styles.pixelSize / 20);
+            this.display.appendChild(pixel);
+            this.displayMatrix[y].push(pixel);
+         }
+      }
+   }
+
+   write = (message = this.message) => {
+      this.message = message;
+      clearInterval(this.frameInterval);
+      if (font) {
+         let messageFrame = Array.from({ length: font.styles.height }, () => []);
+         for (let i = 0; i < this.message.length; i++) {
+            const charCode = this.message.charCodeAt(i);
+            if (font.glyphs[charCode]) {
+               for (let y = 0; y < font.styles.height; y++) {
+                  messageFrame[y].push(...font.glyphs[charCode].matrix[y]);
+                  messageFrame[y].push(...this.tracking);
+               }
+            } else {
+               for (let y = 0; y < font.styles.height; y++) {
+                  messageFrame[y].push(...Array(font.styles.defaultWidth + font.styles.tracking).fill(0));
+               }
+            }
+         }
+         const messageFrameLength = messageFrame[0].length;
+         let offset = this.matrixWidth;
+   
+         this.frameInterval = setInterval(() => {
+            for (let y = 0; y < this.matrixHeight; y++) {
+               for (let x = 0; x < this.matrixWidth; x++) {
+                  if (messageFrame[y][x - offset] == 1) {
+                     this.displayMatrix[y][x].classList.add('active');
+                  } else {
+                     this.displayMatrix[y][x].classList.remove('active');
+                  }
+               }
+            }
+            offset--;
+            if (offset < -messageFrameLength) {
+               clearInterval(this.frameInterval);
+               setTimeout(this.write, 100);
+            }
+         }, 100);
+      }
+   }
+
+   showControls = () => {
+      this.dialog.classList.remove('hidden');
+   }
+
+   hideControls = () => {
+      this.dialog.classList.add('hidden');
+   }
+}
+customElements.define('dm-display', DMDisplay);
+
+class DMSpecimen extends HTMLElement {
+   constructor() {
+      super();
+      this.specimenDialog = document.querySelector('#type-specimen');
+      this.typeSpecimen = this.specimenDialog.querySelector('dm-specimen');
+      this.typeDisplay = this.specimenDialog.querySelector('dm-display');
+
+      document.addEventListener('update-display-font', this.updateSpecimen);
+      document.addEventListener('keydown', (e) => {
+         if (e.key === 'Escape') {
+            this.specimenDialog.close();
+         }
+         if (e.key.toLowerCase() === 'p') {
+            this.openSpecimen();
+         }
+      });
+   }
+
+   attributeChangedCallback() {
+      this.updateSpecimen();
+   }
+
+   openSpecimen = () => {
+      this.specimenDialog?.show();
+      document.dispatchEvent(new CustomEvent('update-display-font'));
+   }
+
+   updateSpecimen = () => {
+      let specimenInnerHTML = '';
+      for (const charset in charsets) {
+         for (const glyph of charsets[charset].chars) {
+            if (!isEmpty(glyph)) {
+               specimenInnerHTML += `
+                  <dm-glyph codepoint="${glyph}" class="column gap-xs"></dm-glyph>
+               `;
+            }
+         }
+      }
+      this.innerHTML = specimenInnerHTML;
+      font.syncStyles();
+   }
+}
+customElements.define('dm-specimen', DMSpecimen);
+
 // class DMDisplay extends HTMLElement {
 //    constructor() {
 //       super();
@@ -831,3 +1007,15 @@ customElements.define('dm-info-panel', DMInfoPanel);
 //    }
 // }
 // customElements.define('dm-display', DMDisplay);
+
+
+// case 'font':
+//    fetch(this.getAttribute('font'))
+//    .then(response => response.json())
+//    .then(data => {
+//       font = data;
+//       this.matrixHeight = font.styles.height;
+//       this.tracking = Array.from({ length: font.styles.tracking }, () => 0);
+//       this.syncDisplay();
+//       this.write(this.getAttribute('value'));
+//    });

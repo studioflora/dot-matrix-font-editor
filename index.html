@@ -18,6 +18,7 @@
    <link href="/styles/sf-styles/sf-styles.css" rel="stylesheet">
    <link href="styles/styles.css" rel="stylesheet">
    <link href="styles/svg.css" rel="stylesheet">
+   <script src="/scripts/sfignals/sfignals.js" defer></script>
    <script src="script.js" defer></script>
    <script src="components.js" defer></script>
 
@@ -46,7 +47,6 @@
       <sf-toggle toggle-target="#control-panel" toggle-class="collapse-width" style="grid-area: col-btn"></sf-toggle>
 
       <sf-fullscreen style="grid-area: fs-btn"></sf-fullscreen>
-         
 
       <!-- Top -->
       <div class="flex" style="grid-area: top">
@@ -218,5 +218,20 @@
          </div>
       </article>
    </section>
+
+   <dialog id="type-specimen">
+      <div id="type-specimen-container" class="column gap-l padding-l">
+         <section class="column gap-xs">
+            <h2>Sample</h2>
+            <div class="column gap-m">
+               <dm-display width="80" value="Dot Matrix Font Editor"></dm-display>
+            </div>
+         </section>
+         <section class="column gap-xs">
+            <h2>Glyphs</h2>
+            <dm-specimen></dm-specimen>
+         </section>
+      </div>
+   </dialog>
 </body>
 </html>

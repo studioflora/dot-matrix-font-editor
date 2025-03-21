@@ -39,7 +39,7 @@
    --bg-1: light-dark(var(--light-base-1), var(--dark-base-1));
    --bg-2: light-dark(var(--light-base-2), var(--dark-base-2));
 
-   --border-color: var(--bg-2);
+   --border-color: var(--bg-1);
 }
 
 body {
@@ -170,7 +170,7 @@ dm-glyph-editor svg {
 #control-panel {
    grid-area: cp;
    overflow-x: hidden;
-   overflow-y: scroll;
+   overflow-y: auto;
    transition: width var(--out);
    width: 12em;
    max-height: 100%;
@@ -190,12 +190,17 @@ dm-glyph-editor svg {
    padding: var(--gap-s) var(--gap-m);
 }
 
+#control-panel, dm-type-case {
+   scrollbar-width: thin;
+   scrollbar-color: var(--bg-2) var(--bg-0);
+}
+
 dm-font-name-input input {
    max-width: 100%;
 }
 
 dm-type-case {
-   overflow-y: scroll;
+   overflow-y: auto;
    grid-area: tc;
 }
 
@@ -210,6 +215,21 @@ dm-charset {
 
 dm-charset:last-of-type {
    border-bottom: none;
+}
+
+dm-specimen {
+   display: grid;
+   grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+dm-specimen dm-glyph {
+   --bg-1: var(--bg-0);
+   aspect-ratio: 1;
+}
+
+dm-specimen dm-glyph canvas {
+   height: 100%;
+   margin: auto;
 }
 
 dm-glyph p {
@@ -254,8 +274,61 @@ dm-glyph.clipboard canvas {
    right: var(--gap-s);
 }
 
+#type-specimen {
+   width: 100vw;
+   height: 100vh;
+}
+
+#type-specimen h2 {
+   color: var(--fg-alt-1);
+}
+
+#type-specimen-container {
+   margin: auto;
+   max-width: 1000px;
+}
+
+dm-specimen {
+   border-top: var(--border);
+   border-left: var(--border);
+}
+
+dm-specimen dm-glyph {
+   --bg-1: var(--bg-0);
+   padding: var(--gap-l);
+   border-bottom: var(--border);
+   border-right: var(--border);
+   /* margin: calc(var(--gap-line) / -2); */
+}
+
+dm-display #display {
+   height: max-content;
+   width: max-content;
+}
+
+dm-display .hidden {
+   display: none;
+}
+
+dm-display input[type="number"] {
+   width: 3rem;
+}
+
+#close-display-controls-btn {
+   border-radius: var(--gap-xs);
+   height: 1.25em;
+   aspect-ratio: 1;
+   justify-content: center;
+   padding: 0;
+}
+
+dialog {
+   background-color: var(--bg-0);
+   border: none; 
+}
+
 @media (max-aspect-ratio: 1/1) {
-   /* Portrait layout here */
+   /* Portrait layout */
 
    body {
       grid-template-columns: auto min-content;
@@ -274,13 +347,22 @@ dm-glyph.clipboard canvas {
       border-left: 0;
    }
 
-   dialog {
+   #info-panel  {
       border: var(--border);
       margin-inline: auto;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
       max-width: 80vw;
+
+   }
+
+   dm-specimen {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+   }
+
+   #type-specimen:focus, #type-specimen:focus-visible {
+      outline-color: var(--bg-2);
    }
 
    dialog a {

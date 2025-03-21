@@ -110,10 +110,12 @@ let font = {
       const widthDiff = width - this.styles.defaultWidth;
 
       if (heightDiff < 0 || widthDiff < 0) {
-         if(confirm('Are you sure you want to change your glyph size? Some data may be lost.')) {
-
-         } else {
-            return;
+         if (isFontEmpty()) {
+            if(confirm('Are you sure you want to change your glyph size? Some data may be lost.')) {
+   
+            } else {
+               return;
+            }
          }
       }
       this.styles.height = +height;
@@ -281,6 +283,27 @@ function isValidCodepoint(codepoint) {
    } catch (e) {
       return false;
    }
+}
+
+function isEmpty(codepoint) {
+   for (let y = 0; y < font.styles.height; y++) {
+      for (let x = 0; x < font.styles.defaultWidth; x++) {
+         if (font.glyphs?.[codepoint]?.matrix[y][x] == 1) {
+            return false;
+         }
+      }
+   }
+   return true;
+}
+
+function isFontEmpty() {
+   font.forEachGlyph(glyph => {
+      console.log(glyph.codepoint);
+      if (!isEmpty(glyph.codepoint)) {
+         return false;
+      }
+   });
+   return true;
 }
 
 function checkPreferredTheme() {
@@ -572,8 +595,10 @@ function importFont(event) {
       font.sortGlyphs();
    }
 
-   font.setCurrentGlyph(Object.values(font)[0].codepoint);
+   console.log(Object.values(font.glyphs)[0]);
+   font.setCurrentGlyph(Object.values(font.glyphs)[0].codepoint);
 }
+
 
 // importButton.addEventListener('change', importFont);
 
