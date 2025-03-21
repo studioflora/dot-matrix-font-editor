@@ -599,20 +599,6 @@ function importFont(event) {
    font.setCurrentGlyph(Object.values(font.glyphs)[0].codepoint);
 }
 
-
-// importButton.addEventListener('change', importFont);
-
-// fontNameInput.addEventListener('input', function() {
-//    font.name = fontNameInput.value;
-// });
-
-// importButton.addEventListener('change', function(e){
-//    var reader = new FileReader();
-//    reader.onload = function(e){
-//       sourceFont = JSON.parse(e.target.result);
-//    }
-// })
-
 // Used to determine dragging for the pixel editor
 window.addEventListener('pointerdown', function(e) {
    mouseIsDown = true;
