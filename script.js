@@ -1,4 +1,5 @@
 const r = document.querySelector(':root');
+const htmlElem = document.querySelector('html');
 const body = document.querySelector('body');
 const editorGlyph = document.querySelector('#editor');
 
@@ -634,10 +635,29 @@ document.addEventListener('keydown', function(e) {
 checkPreferredTheme();
 new Glyph('clipboard');
 
-window.onload = () => {
-   // font.setCurrentGlyph(65);
+const supportsDvh = () => { window.getComputedStyle(body).height == '100dvh' }
 
+const bodyHeightDisplay = document.querySelector('#body-height-display')
+let resizeTimeout;
+function resizeHeight() {
+   clearTimeout(resizeTimeout);
+   resizeTimeout = setTimeout(function() {
+      window.scrollTo(0, 0);
+      htmlElem.style.height = `${window.visualViewport.height}px`;
+      bodyHeightDisplay.innerHTML = `${window.visualViewport.height}px`;
+   }, 100);
+}
+
+window.onload = () => {
    // font.setCurrentGlyph(Object.keys(this.glyphs)[0]);
+   // if (!supportsDvh) {
+      // resizeHeight()
+
+      // window.addEventListener('resize', resizeHeight);
+      // window.addEventListener('orientationchange', resizeHeight);
+      // window.addEventListener('focus', resizeHeight);
+      // window.addEventListener('blur', resizeHeight);
+   // }
 }
 
 window.addEventListener('beforeunload', (e) => {

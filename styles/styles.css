@@ -42,11 +42,17 @@
    --border-color: var(--bg-1);
 }
 
+html {
+   height: 100%;
+   height: 100dvh;
+   overflow: hidden;
+}
+
 body {
    font-family: 'Noto Sans', sans-serif;
    font-weight: 400;
    width: 100vw;
-   height: 100%;
+   height: 100vh;
    height: 100dvh;
    min-height: 0;
    overflow: hidden;
