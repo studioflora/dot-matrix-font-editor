@@ -72,7 +72,6 @@ let font = {
    },
 
    load(newFont = defaultFont) {
-      console.log(workIsSaved);
       if(!workIsSaved) {
          if(confirm('Are you sure you want to open a font? Any unsaved progress will be lost.')) {
 
@@ -85,6 +84,7 @@ let font = {
          this.charsets[charset].removeChars();
       }
       this.setName(newFont.name);
+      this.metadata.createdOn = newFont.metadata.createdOn;
       this.setPixelSize(newFont.styles?.pixelSize);
       this.setTracking(newFont.styles?.tracking);
       this.setBaseline(newFont.styles?.baseline);
@@ -353,18 +353,25 @@ let font = {
          const sourceFont = JSON.parse(fontFile);
          font.load(sourceFont);
       }
-      // console.log(Object.values(font.glyphs)[0]);
       font.setCurrentGlyph(Object.values(font.glyphs)[0].codepoint);
    },
    
    localSaveFont() {
+      if(localSaves.hasOwnProperty(font.name)) {
+         if(localSaves[font.name].metadata.createdOn != font.metadata.createdOn) {
+            if(confirm('A font already exists with this name. Replace it?')) {
+
+            } else {
+               return;
+            }
+         }
+      }
       const exportGlyphs = {};
       for (const glyph in font.glyphs) {
          exportGlyphs[glyph] = {
             matrix: font.glyphs[glyph].matrix
          }
       }
-      console.log(`exportglyphs: ${exportGlyphs}`);
       font.metadata.lastEdit = Date.now();
       localSave(font.name, {
          name: font.name, 
