@@ -444,6 +444,7 @@ class DMGlyph extends HTMLElement {
       this.pixelShape = font.styles.pixelShape;
       this.showBaseline = font.styles.showBaseline;
       this.baselineVal = font.styles.baseline;
+      // this.version = font.glyphs[this.codepoint].version;
       
       if (this.hasAttribute('labeled')) {
          this.displayLabel = document.createElement('p');
@@ -569,7 +570,7 @@ class DMCharset extends HTMLElement {
       this.name = charsets[this.slug]?.name ?? `Charset ${this.slug} not found`;
       this.chars = charsets[this.slug]?.chars ?? [];
       this.innerHTML = `
-         <article class="charset column">
+         <article class="charset column gap-xs">
             <div class="flex gap-m">
                <input type="checkbox" name="${this.name}" id="${this.slug}-checkbox">
                <label for="${this.slug}-checkbox" class="small">${this.name}</label>
@@ -615,7 +616,6 @@ class DMCharset extends HTMLElement {
       }
       this.glyphContainer.innerHTML = charsInnerHTML;
       this.checkbox.checked = true;
-      this.charsetContainer.classList.add('gap-m');
    }
 
    removeChars = () => {
@@ -628,7 +628,6 @@ class DMCharset extends HTMLElement {
       }
 
       this.checkbox.checked = false;
-      this.charsetContainer.classList.remove('gap-m');
       font.checkCurrentGlyph();
    }
 }
@@ -646,7 +645,9 @@ class DMTypeCase extends HTMLElement {
 
    build = () => {
       document.removeEventListener('charsets-loaded', this.sync);
-      let typeCaseInnerHTML = '';
+      let typeCaseInnerHTML = `
+         <h2 style="padding-top: var(--gap-s); padding-left: var(--gap-m);">Charsets</h2>
+      `;
       for (const charset in charsets) {
          typeCaseInnerHTML += `
             <dm-charset charset="${charsets[charset].slug}"></dm-charset>
@@ -798,7 +799,7 @@ class DMDisplay extends HTMLElement {
                W
                <input type="number" id="display-width-input">
             </div>
-            <button id="close-display-controls-btn" style="margin-left: auto"><svg><use href="/styles/sf-styles/sf-icons.svg#close" /></svg></button>
+            <button id="close-display-controls-btn" style="margin-left: auto"><svg><use href="/sf-core/sf-icons.svg#close" /></svg></button>
          </div>
       `;
       this.classList.add('column');
@@ -852,7 +853,7 @@ class DMDisplay extends HTMLElement {
       this.display.innerHTML = '';
       this.displayMatrix = [];
       this.display.setAttribute('viewBox', `0 0 ${this.matrixWidth * gridSize} ${this.matrixHeight * gridSize}`);
-      for (let y=0; y < this.matrixHeight; y++) {
+      for (let y = 0; y < this.matrixHeight; y++) {
          this.displayMatrix.push([]);
          for (let x = 0; x < this.matrixWidth; x++) {
             const pixel = document.createElementNS(svgNS, 'circle');
@@ -927,7 +928,8 @@ class DMSpecimen extends HTMLElement {
          if (e.key === 'Escape') {
             this.specimenDialog.close();
          }
-         if (e.key.toLowerCase() === 'p') {
+         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+            e.preventDefault();
             this.openSpecimen();
          }
       });
@@ -946,7 +948,7 @@ class DMSpecimen extends HTMLElement {
       let specimenInnerHTML = '';
       for (const charset in charsets) {
          for (const glyph of charsets[charset].chars) {
-            if (!isEmpty(glyph)) {
+            if (!font.isGlyphEmpty(glyph)) {
                specimenInnerHTML += `
                   <dm-glyph codepoint="${glyph}" class="column gap-xs"></dm-glyph>
                `;
@@ -958,6 +960,162 @@ class DMSpecimen extends HTMLElement {
    }
 }
 customElements.define('dm-specimen', DMSpecimen);
+
+class DMLocalFonts extends HTMLElement {
+   constructor() {
+      super();
+      this.currentFont = null;
+      this.sortedSaveElements = [];
+      this.isOpen = true;
+      this.displayMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      const localFontsHeader = sfCreateElement({
+         class: 'flex spread padding-m',
+         parent: this
+      })
+
+      sfCreateElement({
+         type: 'h2',
+         text: 'Local Projects',
+         parent: localFontsHeader
+      })
+
+      this.localToggleBtn = sfCreateElement({
+         type: 'span',
+         class: 'material-symbols-outlined rotateable rotated',
+         text: 'keyboard_arrow_down',
+         parent: localFontsHeader
+      })
+
+      this.localToggleBtn.onclick = () => {
+         this.showHide();
+      }
+
+      this.fileContainer = sfCreateElement({
+         class: 'flex column',
+         id: 'file-container',
+         parent: this
+      })
+   }
+
+   connectedCallback() {
+      openLocalDB().then((dbSfignal) => {
+         dbSfignal.subscribe(() => this.sync());
+         getLocalSaves();
+      })
+      .catch(() => {
+         this.remove();
+         console.warn('LocalDB not connected. Please save any work you want to keep!');
+      })
+   }
+
+   loadFont = (targetFontName) => {
+      font.load(localSaves[targetFontName]);   
+   }
+
+   showHide() {
+      this.isOpen = !this.isOpen;
+      if(this.isOpen) {
+         this.fileContainer.classList.remove('hidden');
+         this.localToggleBtn.classList.add('rotated');
+      } else {
+         this.fileContainer.classList.add('hidden');
+         this.localToggleBtn.classList.remove('rotated');
+         
+      }
+   }
+
+   sync() {
+      // if (!lastSaved == localSaves[0].name) {
+         let sortedLocalSaves = [];
+         this.fileContainer.innerHTML = '';
+         for (const [fontSaveName, fontSaveData] of Object.entries(localSaves)) {
+            sortedLocalSaves.push(fontSaveData)
+         }
+         sortedLocalSaves.sort((a, b) => b.metadata?.lastEdit - a.metadata?.lastEdit)
+         sortedLocalSaves.forEach(sortedLocalSave => {
+            this.updateFileElement(sortedLocalSave);
+            this.fileContainer.appendChild(sortedLocalSave.fileElement);
+         })
+      // }
+   }
+
+   createFileElement(sourceFont) {
+      const fileElement = sfCreateElement({
+         class: 'flex column padding-m hoverable'
+      })
+
+      fileElement.addEventListener('click', (event) => {
+         if(event.target.classList.contains('localDeleteBtn')) {
+            if(confirm(`Delete font ${sourceFont.name}? This cannot be undone.`)) {
+               localDelete(sourceFont.name);
+            }
+         } else {
+            this.loadFont(sourceFont.name);
+         }
+      })
+
+      const fileName = sfCreateElement({
+         type: 'p',
+         text: sourceFont.name,
+         parent: fileElement
+      })
+
+      const fileDetailsContainer = sfCreateElement({
+         class: 'flex gap-xs',
+         parent: fileElement,
+      })
+
+      const lastEditElement = sfCreateElement({
+         type: 'h3',
+         parent: fileDetailsContainer,
+      });
+
+      sfCreateElement({
+         type: 'h3',
+         text: '·',
+         parent: fileDetailsContainer
+      })
+
+      const deleteBtnIcon = sfCreateElement({
+         type: 'span',
+         class: 'material-symbols-outlined filled localDeleteBtn',
+         text: 'delete',
+         parent: fileDetailsContainer
+      })
+
+      sourceFont.fileElement = fileElement;
+      sourceFont.lastEditElement = lastEditElement;
+   }
+
+   updateFileElement(targetFont) {
+      if(!targetFont.fileElement) {
+         this.createFileElement(targetFont);
+      }
+      let lastElementString = 'Last edit: ';
+      const lastEdit = targetFont?.metadata.lastEdit;
+      const lastEditDate = new Date(lastEdit);
+      const editYear = lastEditDate.getFullYear();
+      if(localNow.getFullYear() == editYear) {
+         const editDayDiff = Math.round((Date.parse(localNow) - lastEdit) / 86400000);
+         switch (editDayDiff) {
+            case 0:
+               lastElementString += 'Today';
+               break;
+            case 1:
+               lastElementString += 'Yesterday';
+               break;
+            default:
+               lastElementString += `${this.displayMonths[lastEditDate.getMonth()]} ${lastEditDate.getDate()}`;
+         }
+      } else {
+         lastElementString += editYear;
+      }
+      lastElementString += ' ';
+      targetFont.lastEditElement.innerText = lastElementString;
+   }
+}
+customElements.define('dm-local-fonts', DMLocalFonts);
 
 // class DMDisplay extends HTMLElement {
 //    constructor() {

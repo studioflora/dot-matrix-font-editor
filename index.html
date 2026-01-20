@@ -5,8 +5,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
    <!-- Theme settings -->
-   <meta name="theme-color" content="#000000">
-   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
+   <meta name="theme-color" content="#090a0a">
+   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#090a0a">
 
    <!-- Fonts and Material Icons -->
    <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,14 +31,17 @@
    <nav class="flex spread">
       <div class="flex gap-s">
          <a id="lab-logo" href="/">
-            <svg><use href="/styles/sf-styles/sf-icons.svg#sf-logo"/></svg>
+            <svg><use href="/sf-core/sf-icons.svg#sf-logo"/></svg>
          </a>
          <h3><span>DMEditor</span><p id="body-height-display"></p></h3>
       </div>
       <dm-info-panel></dm-info-panel>
    </nav>
 
-   <dm-type-case class="column"></dm-type-case>
+   <section id="font-panel">
+      <dm-local-fonts class="column"></dm-local-fonts>
+      <dm-type-case class="column"></dm-type-case>
+   </section>
 
    <section class="padding-s" id="edit-panel">
 
@@ -172,7 +175,7 @@
             <dm-glyph codepoint="clipboard" class="clipboard"></dm-glyph>
             <div class="flex gap-s">
                <div class="column center">
-                  <button id="copy-char" title="Copy current glyph to clipboard" onclick="copyToClipboard()">
+                  <button id="copy-char" title="Copy current glyph to clipboard" onclick="font.copyToClipboard()">
                      <span class="material-symbols-outlined">
                         content_copy
                      </span>
@@ -180,7 +183,7 @@
                   <label for="copy-char" class="small">Copy</label>
                </div>
                <div class="column center">
-                  <button id="paste-char" title="Paste clipboard to current glyph" onclick="pasteFromClipboard()">
+                  <button id="paste-char" title="Paste clipboard to current glyph" onclick="font.pasteFromClipboard()">
                      <span class="material-symbols-outlined">
                         content_paste
                      </span>
@@ -202,7 +205,7 @@
                Upload
             </button>
             <!-- avoids Choose File text -->
-            <input id="import" type="file" style="display:none" onchange="importFont(event)">
+            <input id="import" type="file" style="display:none" onchange="font.loadFromFile(event)">
             <button id="download" title="Download font matrix" onclick="saveTypeface()">
                <span class="material-symbols-outlined">
                   download
@@ -215,6 +218,12 @@
                </span>
                Build .otf
             </button>
+            <button title="Local Save" onclick="font.localSaveFont()">
+               <span class="material-symbols-outlined">
+                  save
+               </span>
+               Local save
+            </button>
          </div>
       </article>
    </section>
@@ -224,7 +233,7 @@
          <section class="column gap-xs">
             <h2>Sample</h2>
             <div class="column gap-m">
-               <dm-display width="80" value="Dot Matrix Font Editor"></dm-display>
+               <dm-display width="90" value="go make something"></dm-display>
             </div>
          </section>
          <section class="column gap-xs">
