@@ -395,7 +395,7 @@ dialog {
 
    body {
       grid-template-columns: auto min-content;
-      grid-template-rows: min-content 2fr 1fr;
+      grid-template-rows: min-content 1.5fr 1fr;
       grid-template-areas:
          "nav nav"
          "ep  cp"
