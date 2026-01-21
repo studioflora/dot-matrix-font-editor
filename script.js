@@ -84,7 +84,7 @@ let font = {
          this.charsets[charset].removeChars();
       }
       this.setName(newFont.name);
-      this.metadata.createdOn = newFont.metadata.createdOn;
+      this.metadata.createdOn = newFont?.metadata?.createdOn ?? Date.now();
       this.setPixelSize(newFont.styles?.pixelSize);
       this.setTracking(newFont.styles?.tracking);
       this.setBaseline(newFont.styles?.baseline);
