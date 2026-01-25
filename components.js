@@ -928,7 +928,7 @@ class DMSpecimen extends HTMLElement {
          if (e.key === 'Escape') {
             this.specimenDialog.close();
          }
-         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
             e.preventDefault();
             this.openSpecimen();
          }
