@@ -670,7 +670,8 @@ function exportTypeface(targetFont = font) {
       descender: -targetFont.styles.baseline * otfGridSize,
       glyphs: newGlyphs
    });
-   otfFont.download();
+   const href = window.URL.createObjectURL(new Blob([otfFont.toArrayBuffer()]), {type: "font/opentype"});
+   Object.assign(document.createElement('a'), {download: targetFont.name + ".otf", href}).click();
    workIsSaved = true;
 }
 
